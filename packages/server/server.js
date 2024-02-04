@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const errorHandler = require('./middleware/errorHandler');
 const mongoose = require('mongoose');
+const routes = require('./routes');
 
 // Connect to the database
 connectDB();
@@ -27,6 +28,9 @@ app.use('/', express.static(path.join(__dirname, '/public')));
 app.get('/api/health', (req, res) => {
   res.send('OK');
 });
+
+// Routes
+app.use(routes);
 
 
 app.use(errorHandler);
