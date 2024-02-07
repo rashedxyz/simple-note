@@ -1,7 +1,7 @@
 const User = require("../model/User");
 const bcrypt = require("bcrypt");
 
-const registerController = async (req, res, next) => {
+const handleRegistration = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password)
@@ -20,4 +20,4 @@ const registerController = async (req, res, next) => {
   }
 };
 
-module.exports = registerController;
+module.exports = {handleRegistration};

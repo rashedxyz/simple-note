@@ -17,6 +17,9 @@ const userSchema = new Schema({
       name: 'User',
       permissions: ['get:notes', 'post:notes', 'patch:notes', 'delete:notes']
     }
+  },
+  refreshToken: {
+    type: String
   }
 }, {
   timestamps: true
