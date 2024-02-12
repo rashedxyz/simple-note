@@ -3,7 +3,7 @@ import { Button, Form, Input, Card, Row, Col } from "antd";
 function SignUp() {
   return (
     <Row>
-      <Col span={12} offset={6}>
+      <Col span={10} offset={7}>
         <Card className="mt-[4rem]" title="Sign up">
           <Form
             labelCol={{
