@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 
 const handleRegistration = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
 
     if (!email || !password)
       return res
@@ -12,10 +12,10 @@ const handleRegistration = async (req, res, next) => {
 
     const duplicate = await User.findOne({ email }).exec();
     if (duplicate)
-      return res.status(409).json({ message: "Email already exists" });
+      return res.status(409).json({ message: "User already exists" });
     const encryptedPassword = await bcrypt.hash(password, 10);
-    await User.create({ email, password: encryptedPassword });
-    return res.status(201).json({ message: "User created" });
+    await User.create({ name, email, password: encryptedPassword });
+    return res.status(201).json({ message: "Signup successful" });
   } catch (error) {
     next(error);
   }
