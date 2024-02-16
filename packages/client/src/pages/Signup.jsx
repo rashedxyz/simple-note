@@ -1,4 +1,5 @@
 import { Button, Form, Input, Card, Row, Col, Alert } from "antd";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import useAlert from "../hooks/useAlert";
 
@@ -11,7 +12,6 @@ function SignUp() {
   } = useAlert();
 
   const handleSignupFormSubmit = async (values) => {
-    console.log("Received values of form: ", values);
     try {
       const result = await axios.post("/api/register", values);
       setSuccessAlertMessage(result.data.message);
@@ -33,7 +33,10 @@ function SignUp() {
         <Card className="mt-[4rem]" title="Sign up">
           {successAlertMessage && (
             <Alert
-              message={successAlertMessage}
+              message=<>
+                {successAlertMessage}{" "}
+                <Link to="/login">Login from here</Link>
+              </>
               type="success"
               className="mb-[1rem]"
             />
