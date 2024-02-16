@@ -12,10 +12,10 @@ const handleRefreshToken = async (req, res) => {
     jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET,
-      (err, decoded) => {
+      async (err, decoded) => {
         if (err) return res.status(403).json({ message: "Invalid token" });
 
-        const foundUser = User.findOne({ email: decoded.email });
+        const foundUser = await User.findOne({ email: decoded.email });
         if (!foundUser)
           return res.status(403).json({ message: "Forbidden request" });
 
@@ -24,7 +24,10 @@ const handleRefreshToken = async (req, res) => {
           process.env.ACCESS_TOKEN_SECRET,
           { expiresIn: "1h" }
         );
-        res.status(200).json({ accessToken });
+        
+        res
+          .status(200)
+          .json({ email: foundUser.email, role: foundUser.role, accessToken });
       }
     );
   } catch (error) {

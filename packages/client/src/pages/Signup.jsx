@@ -1,9 +1,13 @@
+import { useEffect } from "react";
 import { Button, Form, Input, Card, Row, Col, Alert } from "antd";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "../api/axios";
 import useAlert from "../hooks/useAlert";
+import useAuth from "../hooks/useAuth";
 
 function SignUp() {
+  const { auth } = useAuth();
+  const navigate = useNavigate();
   const {
     successAlertMessage,
     setSuccessAlertMessage,
@@ -11,11 +15,20 @@ function SignUp() {
     setErrorAlertMessage
   } = useAlert();
 
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (auth?.accessToken) {
+      navigate("/dashboard");
+    }
+  }, []);
+
   const handleSignupFormSubmit = async (values) => {
     try {
       const result = await axios.post("/api/register", values);
       setSuccessAlertMessage(result.data.message);
       setErrorAlertMessage("");
+      form.resetFields();
     } catch (error) {
       console.error("error", error);
       setErrorAlertMessage(
@@ -33,10 +46,11 @@ function SignUp() {
         <Card className="mt-[4rem]" title="Sign up">
           {successAlertMessage && (
             <Alert
-              message=<>
-                {successAlertMessage}{" "}
-                <Link to="/login">Login from here</Link>
-              </>
+              message={
+                <>
+                  {successAlertMessage} <Link to="/login">Login from here</Link>
+                </>
+              }
               type="success"
               className="mb-[1rem]"
             />
@@ -49,6 +63,7 @@ function SignUp() {
             />
           )}
           <Form
+            form={form}
             labelCol={{
               span: 4
             }}
@@ -84,7 +99,7 @@ function SignUp() {
               rules={[
                 {
                   required: true,
-                  message: "Please input your password!"
+                  message: "Please enter your password!"
                 }
               ]}
             >

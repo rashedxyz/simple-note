@@ -30,10 +30,11 @@ const handleLogin = async (req, res, next) => {
     }
 
     // create access token and refresh token
+    const userEmail = foundUser.email;
     const userRole = foundUser.role;
 
     const accessToken = jwt.sign(
-      { email, role: userRole },
+      { email: userEmail, role: userRole },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "1h" }
     );
@@ -44,7 +45,6 @@ const handleLogin = async (req, res, next) => {
     // save refresh token to user
     foundUser.refreshToken = refreshToken;
     await foundUser.save();
-
     // set refresh token to cookie
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
@@ -54,7 +54,7 @@ const handleLogin = async (req, res, next) => {
     });
 
     // return access token and user role
-    res.status(200).json({ accessToken });
+    res.status(200).json({ email: foundUser.email, role: foundUser.role, accessToken });
   } catch (error) {
     next(error);
   }
