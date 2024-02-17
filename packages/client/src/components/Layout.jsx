@@ -100,7 +100,7 @@ function LayoutComponent() {
             <Outlet />
           </Content>
           <Footer style={{ textAlign: "center" }}>
-            Simple Note ©{new Date().getFullYear()} Created by Rashed Mahmud
+            Simple Note ©{new Date().getFullYear()}. Created with ❤️ by Rashed Mahmud
           </Footer>
         </Layout>
       </Layout>
