@@ -1,5 +1,7 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { Layout, Menu } from "antd";
+import useAuth from "../hooks/useAuth";
+import useLogout from "../hooks/useLogout";
 import {
   UserAddOutlined,
   UserOutlined,
@@ -8,10 +10,15 @@ import {
   UsergroupAddOutlined,
   LogoutOutlined
 } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const { Header, Sider, Content, Footer } = Layout;
 
 function LayoutComponent() {
+  const { auth } = useAuth();
+  const logout = useLogout();
+  const navigate = useNavigate();
+
   const navMenuItems = [
     {
       key: "/signup",
@@ -50,6 +57,15 @@ function LayoutComponent() {
 
   const location = useLocation();
 
+  const menuItemClickHandler = async (e) => {
+    const isLogoutClicked = e.key === "/logout";
+
+    if (isLogoutClicked) {
+      await logout();
+      navigate('/login');
+    }
+  };
+
   return (
     <Layout className="h-[100vh]">
       <Header className="flex items-center">
@@ -58,25 +74,34 @@ function LayoutComponent() {
             <Link to="/">Simple Note</Link>
           </h3>
         </div>
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          items={navMenuItems}
-          selectedKeys={location.pathname === "/" ? [] : [location.pathname]}
-          className="grow"
-        />
+        {!auth?.accessToken && (
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            items={navMenuItems}
+            selectedKeys={location.pathname === "/" ? [] : [location.pathname]}
+            className="grow"
+          />
+        )}
       </Header>
       <Layout>
-        {/* <Sider width={200}>
-          <Menu theme="dark" mode="inline" items={sideMenuItems} />
-        </Sider> */}
+        {auth?.accessToken && (
+          <Sider width={200}>
+            <Menu
+              theme="dark"
+              mode="inline"
+              items={sideMenuItems}
+              onClick={menuItemClickHandler}
+            />
+          </Sider>
+        )}
         <Layout>
           <Content className="p-4">
             <Outlet />
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
-          Simple Note ©{new Date().getFullYear()} Created by Rashed Mahmud
-        </Footer>
+          <Footer style={{ textAlign: "center" }}>
+            Simple Note ©{new Date().getFullYear()} Created by Rashed Mahmud
+          </Footer>
         </Layout>
       </Layout>
     </Layout>
