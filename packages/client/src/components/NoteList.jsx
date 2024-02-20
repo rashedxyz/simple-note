@@ -53,7 +53,7 @@ const NoteList = () => {
   ];
 
   function handleCreateNoteBtnClick() {
-    navigate("/create-note");
+    navigate("/notes/create");
   }
 
   function deleteBtnClickHandler(id) {
