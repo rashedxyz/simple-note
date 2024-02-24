@@ -1,5 +1,5 @@
 const getAllNotes = (req, res) => {
-  console.log(req.email, req.role);
+  
   res.status(200).json({ message: "GET all notes" });
 };
 

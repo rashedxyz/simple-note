@@ -15,7 +15,7 @@ router.get('/api/logout', logoutController.handleLogout);
 router.use(verifyJWT);
 router.route('/api/notes')
 .get(verifyRole, noteController.getAllNotes)
-.post(noteController.createNote);
+.post(verifyRole, noteController.createNote);
 
 router.route('/api/notes/:id')
 .get(noteController.getNoteById)
