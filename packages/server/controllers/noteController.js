@@ -1,10 +1,12 @@
+const Note = require("../model/Note");
+
 const getAllNotes = (req, res) => {
-  
   res.status(200).json({ message: "GET all notes" });
 };
 
 const createNote = (req, res) => {
-  console.log(req.email, req.role);
+  console.log(req.body);
+  
   res.status(201).json({ message: "POST create note" });
 };
 
