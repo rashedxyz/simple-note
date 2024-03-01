@@ -20,7 +20,7 @@ const handleRefreshToken = async (req, res) => {
           return res.status(403).json({ message: "Forbidden request" });
 
         const accessToken = jwt.sign(
-          { email: foundUser.email, role: foundUser.role },
+          { userId: foundUser._id, email: foundUser.email, role: foundUser.role },
           process.env.ACCESS_TOKEN_SECRET,
           { expiresIn: "1h" }
         );

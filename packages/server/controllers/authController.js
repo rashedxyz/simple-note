@@ -30,11 +30,12 @@ const handleLogin = async (req, res, next) => {
     }
 
     // create access token and refresh token
+    const userId = foundUser._id;
     const userEmail = foundUser.email;
     const userRole = foundUser.role;
 
     const accessToken = jwt.sign(
-      { email: userEmail, role: userRole },
+      { userId, email: userEmail, role: userRole },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "1h" }
     );
