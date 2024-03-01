@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('express-async-errors');
 const express = require('express');
 const app = express();
 const connectDB = require('./config/dbConn');
@@ -11,6 +12,7 @@ const path = require('path');
 const errorHandler = require('./middleware/errorHandler');
 const mongoose = require('mongoose');
 const routes = require('./routes');
+
 
 // Connect to the database
 connectDB();

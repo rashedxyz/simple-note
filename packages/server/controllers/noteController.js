@@ -1,15 +1,15 @@
 const Note = require("../model/Note");
+const User = require("../model/User");
 
-const getAllNotes = (req, res) => {
-  res.status(200).json({ message: "GET all notes" });
+const getAllNotes = async (req, res) => {
+  const notes = await User.findById(req.userId);
+  res.status(200).json({ message: "GET all notes", data: notes });
 };
 
 const createNote = async (req, res) => {
-  console.log(req.body);
-  const {title, body} = req.body;
-
-  await Note.create({ title, body, user: req.userId});
   
+  const {title, body} = req.body;
+  await Note.create({ title, body, user: req.userId});
   res.status(201).json({ message: "POST create note" });
 };
 
