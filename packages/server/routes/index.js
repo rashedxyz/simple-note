@@ -6,6 +6,7 @@ const logoutController = require('../controllers/logoutController');
 const noteController = require('../controllers/noteController');
 const verifyJWT = require('../middleware/verifyJWT');
 const verifyRole = require('../middleware/verifyRole');
+const verifyMongooseId = require('../middleware/verifyMongooseId');
 
 router.post('/api/register', registerController.handleRegistration);
 router.post('/api/auth', authController.handleLogin);
@@ -18,7 +19,7 @@ router.route('/api/notes')
 .post(verifyRole, noteController.createNote);
 
 router.route('/api/notes/:id')
-.get(noteController.getNoteById)
+.get(verifyMongooseId, noteController.getNoteById)
 .put(noteController.updateNote)
 .delete(noteController.deleteNote);
 

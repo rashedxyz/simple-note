@@ -1,25 +1,29 @@
 const Note = require("../model/Note");
-const User = require("../model/User");
 
-const getAllNotes = async (req, res) => {
-  const notes = await User.findById(req.userId);
-  res.status(200).json({ message: "GET all notes", data: notes });
+const getAllNotes = async (_, res) => {
+  const notes = await Note.find().lean();
+  res.status(200).json({ message: "success", data: notes });
 };
 
 const createNote = async (req, res) => {
-  
-  const {title, body} = req.body;
-  await Note.create({ title, body, user: req.userId});
-  res.status(201).json({ message: "POST create note" });
+  const { title, body } = req.body;
+  const createdNote =  await Note.create({ title, body, user: req.userId });
+  res.status(201).json({ message: "success", data: createdNote });
 };
 
-const getNoteById = (req, res) => {
-  console.log(req.email, req.role);
-  res.status(200).json({ message: "GET note by id" });
+const getNoteById = async (req, res) => {
+  const noteId = req.params.id;
+
+  const note = await Note.findById(noteId, ["title", "body"]).lean();
+  if (!note) return res.status(404).json({ message: "Note not found" });
+
+  res.status(200).json({ message: "success", data: note });
 };
 
 const updateNote = (req, res) => {
-  console.log(req.email, req.role);
+  const noteId = req.params.id;
+  const { title, body } = req.body;
+  
   res.status(200).json({ message: "PUT update note" });
 };
 
