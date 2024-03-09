@@ -20,7 +20,7 @@ router.route('/api/notes')
 
 router.route('/api/notes/:id')
 .get(verifyMongooseId, noteController.getNoteById)
-.put(noteController.updateNote)
-.delete(noteController.deleteNote);
+.patch(verifyMongooseId, noteController.updateNote)
+.delete(verifyMongooseId, noteController.deleteNote);
 
 module.exports = router;  
