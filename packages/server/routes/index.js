@@ -19,8 +19,8 @@ router.route('/api/notes')
 .post(verifyRole, noteController.createNote);
 
 router.route('/api/notes/:id')
-.get(verifyMongooseId, noteController.getNoteById)
-.patch(verifyMongooseId, noteController.updateNote)
-.delete(verifyMongooseId, noteController.deleteNote);
+.get(verifyRole, verifyMongooseId, noteController.getNoteById)
+.patch(verifyRole, verifyMongooseId, noteController.updateNote)
+.delete(verifyRole, verifyMongooseId, noteController.deleteNote);
 
-module.exports = router;  
+module.exports = router;
