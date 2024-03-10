@@ -2,8 +2,7 @@ const User = require("../model/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const handleLogin = async (req, res, next) => {
-  try {
+const handleLogin = async (req, res) => {
     // get data from request body
     const { email, password } = req.body;
 
@@ -56,9 +55,6 @@ const handleLogin = async (req, res, next) => {
 
     // return access token and user role
     res.status(200).json({ email: foundUser.email, role: foundUser.role, accessToken });
-  } catch (error) {
-    next(error);
-  }
 };
 
 module.exports = { handleLogin };
