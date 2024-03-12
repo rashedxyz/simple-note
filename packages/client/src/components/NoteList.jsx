@@ -1,8 +1,23 @@
 import { Table, Button, Card, Flex } from "antd";
+import { useEffect } from "react";
 import {useNavigate} from "react-router-dom";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const NoteList = () => {
   const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
+
+  console.log(axiosPrivate)
+
+
+  // useEffect(() => {
+  //   const getNotes = async () => {
+  //     const notes = await axiosPrivate.get("/api/notes");
+  //     console.log(notes)
+      
+  //   }
+  //   getNotes();
+  // }, []);
 
   const dataSource = [
     {
