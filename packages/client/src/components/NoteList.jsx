@@ -1,41 +1,46 @@
+import { useEffect, useState } from "react";
 import { Table, Button, Card, Flex } from "antd";
-import { useEffect } from "react";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const NoteList = () => {
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
+  const [notes, setNotes] = useState([]);
 
-  console.log(axiosPrivate)
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
 
+    const getNotes = async () => {
+      try {
+        const response = await axiosPrivate.get("/api/notes", {
+          signal: controller.signal
+        });
+        if (isMounted) {
+          const fetchedNotes = response.data.data.map((note) => {
+            return {
+              key: note._id,
+              date: note.createdAt,
+              noteTitle: note.title,
+              noteContent: note.body
+            };
+          });
+          setNotes(fetchedNotes);
+        }
+      } catch (error) {
+        console.error(error);
 
-  // useEffect(() => {
-  //   const getNotes = async () => {
-  //     const notes = await axiosPrivate.get("/api/notes");
-  //     console.log(notes)
-      
-  //   }
-  //   getNotes();
-  // }, []);
+      }
+    };
 
-  const dataSource = [
-    {
-      key: "1",
-      date: "2024-10-10",
-      noteTitle: "Note 1"
-    },
-    {
-      key: "2",
-      date: "2024-10-11",
-      noteTitle: "Note 2"
-    },
-    {
-      key: "3",
-      date: "2024-10-12",
-      noteTitle: "Note 3"
-    }
-  ];
+    getNotes();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
 
   const columns = [
     {
@@ -49,13 +54,22 @@ const NoteList = () => {
       key: "noteTitle"
     },
     {
+      title: "Note Content",
+      dataIndex: "noteContent",
+      key: "noteContent"
+    },
+    {
       title: "Action",
       dataIndex: "action",
       key: "action",
       render: (_, record) => {
         return (
           <Flex wrap="wrap" gap="small">
-            <Button type="primary" ghost onClick={() => editBtnClickHandler(record.key)}>
+            <Button
+              type="primary"
+              ghost
+              onClick={() => editBtnClickHandler(record.key)}
+            >
               Edit
             </Button>
             <Button danger onClick={() => deleteBtnClickHandler(record.key)}>
@@ -89,7 +103,7 @@ const NoteList = () => {
         </Button>
       }
     >
-      <Table columns={columns} dataSource={dataSource} />
+      <Table columns={columns} dataSource={notes} />
     </Card>
   );
 };
