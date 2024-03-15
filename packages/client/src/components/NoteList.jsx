@@ -10,32 +10,27 @@ const NoteList = () => {
 
   useEffect(() => {
     let isMounted = true;
-    const controller = new AbortController();
 
     const getNotes = async () => {
       try {
-        const response = await axiosPrivate.get("/api/notes", {
-          signal: controller.signal
-        });
-        if (isMounted) {
-          const fetchedNotes = response.data.data.map((note) => {
-            return {
-              key: note._id,
-              date: note.createdAt,
-              noteTitle: note.title,
-              noteContent: note.body
-            };
-          });
+        const response = await axiosPrivate.get("/api/notes");
 
-          // sort by date
-          fetchedNotes.sort((a, b) => {
-            return new Date(b.date) - new Date(a.date);
-          });
-          setNotes(fetchedNotes);
-        }
+        const fetchedNotes = response.data.data.map((note) => {
+          return {
+            key: note._id,
+            date: note.createdAt,
+            noteTitle: note.title,
+            noteContent: note.body
+          };
+        });
+
+        // sort by date
+        fetchedNotes.sort((a, b) => {
+          return new Date(b.date) - new Date(a.date);
+        });
+        isMounted && setNotes(fetchedNotes);
       } catch (error) {
         console.error(error);
-
       }
     };
 
@@ -43,7 +38,6 @@ const NoteList = () => {
 
     return () => {
       isMounted = false;
-      controller.abort();
     };
   }, []);
 
@@ -91,11 +85,17 @@ const NoteList = () => {
   }
 
   function deleteBtnClickHandler(id) {
-    console.log("Delete button clicked", id);
+    try {
+      axiosPrivate.delete(`/api/notes/${id}`);
+      const updatedNotes = notes.filter((note) => note.key !== id);
+      setNotes(updatedNotes);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function editBtnClickHandler(id) {
-    console.log("Edit button clicked", id);
+    navigate(`/notes/${id}`);
   }
 
   return (

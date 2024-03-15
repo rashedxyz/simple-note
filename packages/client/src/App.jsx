@@ -17,6 +17,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/notes/create" element={<CreateNote />} />
+          <Route path="/notes/:id" element={<CreateNote />} />
           <Route path="*" element={<Missing />} />
         </Route>
       </Route>
