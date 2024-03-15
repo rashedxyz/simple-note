@@ -1,10 +1,21 @@
 import { Row, Col, Card, Form, Input, Button } from "antd";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { useNavigate } from "react-router-dom";
 
 const CreateNote = () => {
   const { TextArea } = Input;
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
 
-  function handleCreateNoteFormSubmit() {
-    console.log("Create note form submitted");
+  async function handleCreateNoteFormSubmit(values) {
+    const createdNote = await axiosPrivate.post("/api/notes", {
+      title: values.noteTitle,
+      body: values.noteContent
+    });
+
+    if(createdNote) {
+      navigate("/dashboard");
+    }
   }
 
   return (

@@ -26,6 +26,11 @@ const NoteList = () => {
               noteContent: note.body
             };
           });
+
+          // sort by date
+          fetchedNotes.sort((a, b) => {
+            return new Date(b.date) - new Date(a.date);
+          });
           setNotes(fetchedNotes);
         }
       } catch (error) {
