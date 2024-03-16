@@ -1,9 +1,11 @@
 const bcrypt = require("bcrypt");
 const User = require("../model/User");
 
-const getAllUsers = async (_, res) => {
+const getAllUsers = async (req, res) => {
+  const userId = req.userId;
   const users = await User.find().lean();
-  res.status(200).json({ message: "success", data: users });
+  const filteredUsers = users.filter((user) => user._id.toString() !== userId);
+  res.status(200).json({ message: "success", data: filteredUsers });
 };
 
 const createUser = async (req, res) => {

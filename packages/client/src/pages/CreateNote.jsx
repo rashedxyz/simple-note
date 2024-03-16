@@ -46,7 +46,7 @@ const CreateNote = () => {
       });
 
       if(updatedNote) {
-        navigate("/dashboard");
+        navigate("/notes");
       }
       return;
     } 

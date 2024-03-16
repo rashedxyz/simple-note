@@ -16,7 +16,7 @@ const userSchema = new Schema({
   role: {
     type: Object,
     default: {
-      id: '1001',
+      id: '1002',
       name: 'User',
       permissions: ['get:notes', 'post:notes', 'patch:notes', 'delete:notes']
     }

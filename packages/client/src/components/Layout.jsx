@@ -32,7 +32,7 @@ function LayoutComponent() {
     }
   ];
 
-  const sideMenuItems = [
+  const adminSideMenuItems = [
     {
       key: "/dashboard",
       icon: <DashboardOutlined />,
@@ -48,6 +48,25 @@ function LayoutComponent() {
       icon: <UsergroupAddOutlined />,
       label: <Link to="/users">Users</Link>
     },
+    {
+      key: "/logout",
+      icon: <LogoutOutlined />,
+      label: "Logout"
+    }
+  ];
+
+  const userSideMenuItems = [
+    {
+      key: "/dashboard",
+      icon: <DashboardOutlined />,
+      label: <Link to="/">Dashboard</Link>
+    },
+    {
+      key: "/notes",
+      icon: <FormOutlined />,
+      label: <Link to="/notes">Notes</Link>
+    },
+    
     {
       key: "/logout",
       icon: <LogoutOutlined />,
@@ -90,7 +109,7 @@ function LayoutComponent() {
             <Menu
               theme="dark"
               mode="inline"
-              items={sideMenuItems}
+              items={auth?.role?.id === "1001" ? adminSideMenuItems : userSideMenuItems}
               onClick={menuItemClickHandler}
             />
           </Sider>
